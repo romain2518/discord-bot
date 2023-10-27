@@ -82,7 +82,7 @@ function getColorBasedOnWarState(state) {
 function getMembersWith0Attack(memberList) {
     const memberWith0Attack = [];
     memberList.forEach(member => {
-        if (member.opponentAttacks === 0) {
+        if (member.attacks === undefined) {
             memberWith0Attack.push(member.name);
         }
     });
