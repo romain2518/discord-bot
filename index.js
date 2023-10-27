@@ -23,6 +23,22 @@ for (const file of commandFiles) {
     }
 }
 
+//? Registering buttons
+client.buttons = new Collection();
+
+const buttonsPath = path.join(__dirname, 'buttons');
+const buttonFiles = fs.readdirSync(buttonsPath).filter(file => file.endsWith('.js'));
+
+for (const file of buttonFiles) {
+	const filePath = path.join(buttonsPath, file);
+	const { button } = await import('file://'+filePath);
+	if ('name' in button && 'execute' in button) {
+        client.buttons.set(button.name, button);
+    } else {
+        console.log(`[WARNING] The button at ${filePath} is missing a required "name" or "execute" property.`);
+    }
+}
+
 //? Registering events
 const eventsPath = path.join(__dirname, 'events');
 const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
