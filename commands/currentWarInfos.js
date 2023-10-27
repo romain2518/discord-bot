@@ -1,6 +1,5 @@
 import { PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
-import { getCurrentWarInfos } from "../utils/clashOfClansApi.js";
-import { displayWarInfo } from "../utils/messageDisplayer.js";
+import { refreshCurrentWarInfos } from "../utils/refreshCurrentWarInfos.js";
 
 export const command = {
     data: new SlashCommandBuilder()
@@ -9,9 +8,7 @@ export const command = {
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
         ,
     async execute(interaction) {
-        const data = await getCurrentWarInfos();
-        const { embedMessages, components } = displayWarInfo(data);
-        
-        interaction.channel.send({ embeds: embedMessages, components: components });
+        refreshCurrentWarInfos(interaction.client);
+        interaction.reply({ content: 'Ta demande a bien été traitée', ephemeral: true });
     },
 };

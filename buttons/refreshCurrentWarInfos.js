@@ -1,12 +1,9 @@
-import { getCurrentWarInfos } from "../utils/clashOfClansApi.js";
-import { displayWarInfo } from "../utils/messageDisplayer.js";
+import { refreshCurrentWarInfos } from "../utils/refreshCurrentWarInfos.js";
 
 export const button = {
     name: 'refreshCurrentWarInfos',
     async execute(interaction) {
-        const data = await getCurrentWarInfos();
-        const { embedMessages, components } = displayWarInfo(data);
-
-        interaction.update({ embeds: embedMessages, components: components })
+        refreshCurrentWarInfos(interaction.client);
+        interaction.reply({ content: 'Données actualisées', ephemeral: true });
     }
 };
