@@ -8,7 +8,9 @@ export const command = {
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
         ,
     async execute(interaction) {
-        refreshCurrentWarInfos(interaction.client);
+        if (!await refreshCurrentWarInfos(interaction.client)) {
+            return interaction.reply({ content: 'Une erreur est survenue, veuillez réessayer plus tard.', ephemeral: true });
+        }
         interaction.reply({ content: 'Ta demande a bien été traitée', ephemeral: true });
     },
 };

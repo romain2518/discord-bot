@@ -5,10 +5,13 @@ import 'dotenv/config';
 export async function refreshCurrentWarInfos(client) {
     const data = await getCurrentWarInfos();
     const { embedMessages, components } = displayWarInfo(data);
-
     
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
     const channel = guild.channels.cache.get(process.env.INFOS_CHANNEL_ID);
+
+    if (!embedMessages && !components) {
+        return false;
+    }
     
     if (channel) {
         channel.messages.fetch({ limit: 1 }).then(messages => {
@@ -24,4 +27,6 @@ export async function refreshCurrentWarInfos(client) {
     } else {
         console.error('Channel not found.');
     }
+
+    return true;
 }
