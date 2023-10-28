@@ -14,7 +14,7 @@ const stateTranslations = {
     'warEnded':'Guerre terminé',
 };
 
-function toValidDate(dateString, state, isEndTime) {
+function toValidDate(dateString, state) {
     if (state === 'notInWar') return '-';
 
     const year = parseInt(dateString.slice(0, 4));
@@ -25,11 +25,12 @@ function toValidDate(dateString, state, isEndTime) {
 
     const dateObject = moment.tz([year, month, day, hours, minutes], 'UTC');
     const franceTime = dateObject.tz('Europe/Paris');
-    if (state === 'preparation' && isEndTime) franceTime.add('1 day');
+    if (state === 'preparation') franceTime.add('1 day');
 
     const today = moment().startOf('day').tz('Europe/Paris');
     const yesterday = moment(today).subtract(1, 'days');
     const tomorrow = moment(today).add(1, 'days');
+    const dayAfterTomorrow = moment(today).add(2, 'days');
 
     let formattedDate = '';
 
@@ -39,6 +40,8 @@ function toValidDate(dateString, state, isEndTime) {
         formattedDate = 'Aujourd\'hui à ' + franceTime.format('HH:mm');
     } else if (franceTime.isSame(tomorrow, 'd')) {
         formattedDate = 'Demain à ' + franceTime.format('HH:mm');
+    } else if (franceTime.isSame(dayAfterTomorrow, 'd')) {
+        formattedDate = 'Après demain à ' + franceTime.format('HH:mm');
     } else {
         formattedDate = franceTime.format('dddd DD MMM YYYY [à] HH:mm');
     }
@@ -108,7 +111,7 @@ export function displayWarInfo(data) {
             .setDescription(stateTranslations[data.state])
             .addFields(
                 {name: 'Début',    value: toValidDate(data.startTime, data.state), inline: true},
-                {name: 'Fin',      value: toValidDate(data.endTime, data.state, true), inline: true},
+                {name: 'Fin',      value: toValidDate(data.endTime, data.state), inline: true},
                 {name: 'Fin dans', value: getTimeLeft(data.endTime, data.state), inline: true},
             )
             .addFields({ name: ' ', value: ' ' })
