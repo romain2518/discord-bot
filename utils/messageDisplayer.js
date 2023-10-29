@@ -136,14 +136,14 @@ export function displayWarInfo(data) {
         ;
     
         const refreshButton = new ButtonBuilder()
-        .setCustomId('refreshCurrentWarInfos')
-        .setLabel('Actualiser les informations')
-        .setStyle(ButtonStyle.Secondary)
-        .setEmoji('🔄')
+            .setCustomId('refreshCurrentWarInfos')
+            .setLabel('Actualiser les informations')
+            .setStyle(ButtonStyle.Secondary)
+            .setEmoji('🔄')
         ;
         
         const row = new ActionRowBuilder()
-        .addComponents(refreshButton)
+            .addComponents(refreshButton)
         ;
     
         embedMessages = [firstMessage, secondMessage]
@@ -153,5 +153,57 @@ export function displayWarInfo(data) {
         embedMessages = false;
         components = false;
     }
+    return { embedMessages, components };
+}
+
+export function displayPlayerList(memberList = []) {
+    let embedMessages = [], components;
+    try {
+        const embedMessage = new EmbedBuilder()
+            .setColor('#40739e')
+            .setTitle('Liste des joueurs Clash of Clans répertoriés sur le serveur Discord.')
+        ;
+    
+        embedMessages.push(embedMessage);
+    
+        let memberEmbedMessage, formattedMemberList, description;
+        for (let i = 0; i < Math.ceil(memberList.length/25); i++) {
+            memberEmbedMessage = new EmbedBuilder().setColor('#40739e');
+            formattedMemberList = memberList.map(member => `<@${member.discordId}> : ${member.gamePseudo}(${member.gameTag}), Notifications : ${member.hasNotifications ? '✅' : '❎'}`);
+            description = formattedMemberList.join('\n');
+            
+            memberEmbedMessage.setDescription(description);
+            embedMessages.push(memberEmbedMessage);
+        }
+        
+            
+        const addButton = new ButtonBuilder()
+            .setCustomId('addOwnName')
+            .setLabel('Ajouter mon nom')
+            .setStyle(ButtonStyle.Success)
+        ;
+    
+        const deleteButton = new ButtonBuilder()
+            .setCustomId('removeOwnName')
+            .setLabel('Supprimer mon nom')
+            .setStyle(ButtonStyle.Danger)
+        ;
+
+        const changeNotificationsReceiptStateButton = new ButtonBuilder()
+            .setCustomId('changeNotificationsReceiptState')
+            .setLabel('Accepter/Refuser les notifications')
+            .setStyle(ButtonStyle.Primary)
+        ;
+        
+        const row = new ActionRowBuilder()
+            .addComponents(addButton, deleteButton, changeNotificationsReceiptStateButton)
+        ;
+        
+        components = [row];
+    } catch (error) {
+        embedMessages = false;
+        components = false;
+    }
+
     return { embedMessages, components };
 }
