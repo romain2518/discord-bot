@@ -6,12 +6,9 @@ export async function refreshCurrentWarInfos(client) {
     const data = await getCurrentWarInfos();
     const { embedMessages, components } = displayWarInfo(data);
     
-    const guild = client.guilds.cache.get(process.env.GUILD_ID);
-    const channel = guild.channels.cache.get(process.env.INFOS_CHANNEL_ID);
+    const channel = client.channels.cache.get(process.env.INFOS_CHANNEL_ID);
 
-    if (!embedMessages && !components) {
-        return false;
-    }
+    if (!embedMessages && !components) return false;
     
     if (channel) {
         channel.messages.fetch({ limit: 1 }).then(messages => {
