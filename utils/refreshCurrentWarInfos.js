@@ -11,9 +11,9 @@ export async function refreshCurrentWarInfos(client) {
     if (!embedMessages && !components) return false;
     
     if (channel) {
-        channel.messages.fetch({ limit: 1 }).then(messages => {
-            const lastMessage = messages.first();
-            if (lastMessage && lastMessage.author.id === process.env.BOT_ID) {
+        channel.messages.fetch({ limit: 2 }).then(messages => {
+            const lastMessage = messages.last();
+            if (lastMessage && lastMessage.author.id === process.env.BOT_ID  && lastMessage.embeds[0].data.title.startsWith('Info guerre de clan')) {
                 lastMessage.edit({ embeds: embedMessages, components: components })
             } else {
                 channel.send({ embeds: embedMessages, components: components });
