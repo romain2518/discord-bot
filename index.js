@@ -39,6 +39,22 @@ for (const file of buttonFiles) {
     }
 }
 
+//? Registering modals
+client.modals = new Collection();
+
+const modalsPath = path.join(__dirname, 'modals');
+const modalFiles = fs.readdirSync(modalsPath).filter(file => file.endsWith('.js'));
+
+for (const file of modalFiles) {
+	const filePath = path.join(modalsPath, file);
+	const { modal } = await import('file://'+filePath);
+	if ('name' in modal && 'execute' in modal) {
+        client.modals.set(modal.name, modal);
+    } else {
+        console.log(`[WARNING] The modal at ${filePath} is missing a required "name" or "execute" property.`);
+    }
+}
+
 //? Registering events
 const eventsPath = path.join(__dirname, 'events');
 const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
