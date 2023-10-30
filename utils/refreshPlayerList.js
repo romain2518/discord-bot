@@ -27,10 +27,14 @@ export async function refreshPlayerList(client, member = null, update = false, r
     
     if (channel) {
         // Returning the promise value which corresponds to the returned bool of the .then()
-        return channel.messages.fetch({ limit: 1 }).then(messages => {
-            const lastMessage = messages.first();
-            if (lastMessage && lastMessage.author.id === process.env.BOT_ID && lastMessage.embeds[0].data.title.startsWith('Liste des joueurs')) {
-                const memberList = retrieveMemberList(lastMessage.embeds);
+        return channel.messages.fetch({ limit: 10 })
+        .then(messages => {
+            // Convert the collection to an array ordered from olest message to newest
+            return Array.from(messages.values()).reverse();
+        }).then(messages => {
+            const playerListMessage = messages[1];
+            if (playerListMessage && playerListMessage.author.id === process.env.BOT_ID && playerListMessage.embeds[0].data.title.startsWith('Liste des joueurs')) {
+                const memberList = retrieveMemberList(playerListMessage.embeds);
                 // Add, update or remove given member if needed
                 if (member) {
                     if (!remove && !update) { // Add member
@@ -58,7 +62,7 @@ export async function refreshPlayerList(client, member = null, update = false, r
                 const { embedMessages, components } = displayPlayerList(memberList);
                 if (!embedMessages && !components) return false;
 
-                lastMessage.edit({ embeds: embedMessages, components: components })
+                playerListMessage.edit({ embeds: embedMessages, components: components })
                 return true;
             } else {
                 const { embedMessages, components } = displayPlayerList();

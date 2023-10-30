@@ -11,10 +11,14 @@ export async function refreshCurrentWarInfos(client) {
     if (!embedMessages && !components) return false;
     
     if (channel) {
-        channel.messages.fetch({ limit: 2 }).then(messages => {
-            const lastMessage = messages.last();
-            if (lastMessage && lastMessage.author.id === process.env.BOT_ID  && lastMessage.embeds[0].data.title.startsWith('Info guerre de clan')) {
-                lastMessage.edit({ embeds: embedMessages, components: components })
+        channel.messages.fetch({ limit: 10 })
+        .then(messages => {
+            // Convert the collection to an array ordered from olest message to newest
+            return Array.from(messages.values()).reverse();
+        }).then(messages => {
+            const warInfosMessage = messages[0];
+            if (warInfosMessage && warInfosMessage.author.id === process.env.BOT_ID  && warInfosMessage.embeds[0].data.title.startsWith('Info guerre de clan')) {
+                warInfosMessage.edit({ embeds: embedMessages, components: components })
             } else {
                 channel.send({ embeds: embedMessages, components: components });
             }
