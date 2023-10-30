@@ -1,5 +1,6 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } from "discord.js";
 import moment from 'moment-timezone';
+import 'dotenv/config'
 
 const colors = {
     'red'   : 0xd63031, // #d63031
@@ -209,4 +210,14 @@ export function displayPlayerList(memberList = []) {
     }
 
     return { embedMessages, components };
+}
+
+export function displayWarStartAlert(client, opponentName) {
+    const channel = client.channels.cache.get(process.env.ALERTS_CHANNEL_ID);
+
+    if (!channel) {
+        return console.log('Channel not fount.');
+    }
+
+    channel.send(`@here La guerre contre ${opponentName} a commencé.`);    
 }
