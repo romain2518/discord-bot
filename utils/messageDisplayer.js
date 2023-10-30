@@ -17,6 +17,8 @@ const stateTranslations = {
 function toValidDate(dateString, state) {
     if (state === 'notInWar') return '-';
 
+    moment.locale('fr');
+    
     const year = parseInt(dateString.slice(0, 4));
     const month = parseInt(dateString.slice(4, 6)) - 1; // Starts from 0
     const day = parseInt(dateString.slice(6, 8));
@@ -44,6 +46,7 @@ function toValidDate(dateString, state) {
         formattedDate = 'Après demain à ' + franceTime.format('HH:mm');
     } else {
         formattedDate = franceTime.format('dddd DD MMM YYYY [à] HH:mm');
+        formattedDate = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
     }
 
     return formattedDate;
