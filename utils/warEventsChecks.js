@@ -2,7 +2,7 @@ import { displayWarStartAlert } from "./messageDisplayer.js";
 import moment from "moment-timezone";
 
 export function checkForWarStarts(client) {
-    const channel = client.channels.cache.get(process.env.ALERTS_CHANNEL_ID);
+    const channel = client.channels.cache.get(process.env.INFOS_CHANNEL_ID);
     
     if (channel) {
         channel.messages.fetch({ limit: 10 })
