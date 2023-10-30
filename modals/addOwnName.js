@@ -17,7 +17,7 @@ export const modal = {
                         discordId: interaction.user.id,
                         gamePseudo: member.name,
                         gameTag: member.tag,
-                        hasNotifications: false,
+                        hasNotifications: true,
                     };
                 }
             });
