@@ -14,3 +14,5 @@ This discord bot allows you to display clash of clans war infos on your discord 
 - `/ping` command returns the server latency
 - `/infos-guerre` command is an admin command that displays informations of the current war of the clan (clan tag must be written in the `.env` file). This message comes with a refresh button.
 - `/liste-joueurs` command is an admin command that displays a list of player. This message comes with add, remove & enable/disable notifications button.
+- Automatic alert when clan wars start
+- Automatic alert for members with notifications enabled when clan wars are about to end
