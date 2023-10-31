@@ -1,5 +1,5 @@
 import { Events } from 'discord.js';
-import { startAutoAlertWarStarts, startAutoRefreshCurrentWarInfos } from '../utils/cronJobManager.js';
+import { startAutoAlertInactiveAttackers, startAutoAlertWarStarts, startAutoRefreshCurrentWarInfos } from '../utils/cronJobManager.js';
 
 export const event = {
     name : Events.ClientReady,
@@ -10,5 +10,6 @@ export const event = {
         //? Starts cron jobs
         startAutoRefreshCurrentWarInfos(client);
         startAutoAlertWarStarts(client);
+        startAutoAlertInactiveAttackers(client);
     }
 };

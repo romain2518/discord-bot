@@ -115,7 +115,8 @@ export function displayWarInfo(data) {
             .setDescription(stateTranslations[data.state])
             .addFields(
                 {name: 'Début',    value: toValidDate(data.startTime, data.state), inline: true},
-                {name: 'Fin',      value: toValidDate(data.endTime, data.state), inline: true},
+                // {name: 'Fin',      value: toValidDate(data.endTime, data.state), inline: true},
+                {name: 'Fin',      value: 'Aujourd\'hui à 17:30', inline: true},
                 {name: 'Fin dans', value: getTimeLeft(data.endTime, data.state), inline: true},
             )
             .addFields({ name: ' ', value: ' ' })
@@ -220,4 +221,21 @@ export function displayWarStartAlert(client, opponentName) {
     }
 
     channel.send(`@here La guerre contre ${opponentName} a commencé.`);    
+}
+
+export function displayInactiveAttackersAlert(client, opponentName, inactiveAttackers) {
+    const channel = client.channels.cache.get(process.env.ALERTS_CHANNEL_ID);
+
+    if (!channel) {
+        return console.log('Channel not fount.');
+    }
+
+    let formattedString = '';
+    inactiveAttackers.forEach((member, index) => {
+        if (index === 0) formattedString += `<@${member.discordId}>(${member.gamePseudo})`;
+        else if (index < inactiveAttackers.length -1) formattedString += `, <${member.discordId}>(${member.gamePseudo})`;
+        else if (index === inactiveAttackers.length -1) formattedString += ` et <${member.discordId}>(${member.gamePseudo})`;
+    });
+
+    channel.send(`La guerre contre ${opponentName} se finit bientôt.\nMerci à ${formattedString} d'attaquer (si le niveau des cibles restantes le permet).`);
 }

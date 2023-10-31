@@ -1,7 +1,7 @@
 import { displayPlayerList } from "./messageDisplayer.js";
 import 'dotenv/config';
 
-function retrieveMemberList(messageEmbeds) {
+export function retrieveMemberList(messageEmbeds) {
     if (messageEmbeds[1] === undefined) return [];
     messageEmbeds.shift();
     
