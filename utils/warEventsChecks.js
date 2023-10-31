@@ -108,9 +108,9 @@ export function checkForInactiveAttackers(client) {
                 // If description is empty
                 if (inactiveAttackersString === '-') return;
                 
-                const inactiveAttackersArray = inactiveAttackersString.split(', ');
+                const inactiveAttackersArray = inactiveAttackersString.split(',\u00A0');
                 const last2InactiveAttackersString = inactiveAttackersArray.splice(-1)[0];
-                const last2InactiveAttackersArray = last2InactiveAttackersString.split(' et ');
+                const last2InactiveAttackersArray = last2InactiveAttackersString.split('\u00A0et\u00A0');
                 if (last2InactiveAttackersArray[0]) inactiveAttackersArray.push(last2InactiveAttackersArray[0]);
                 if (last2InactiveAttackersArray[1]) inactiveAttackersArray.push(last2InactiveAttackersArray[1]);
                 

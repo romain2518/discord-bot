@@ -98,9 +98,10 @@ function getMembersWith0Attack(memberList) {
 
     let formattedString = '';
     memberWith0Attack.forEach((member, index) => {
+        // Using \u00A0 (non breaking spaces) instead of regular spaces in case members use them in there pseudo
         if (index === 0) formattedString += member;
-        else if (index < memberWith0Attack.length -1) formattedString += `, ${member}`;
-        else if (index === memberWith0Attack.length -1) formattedString += ` et ${member}`;
+        else if (index < memberWith0Attack.length -1) formattedString += `,\u00A0${member}`;
+        else if (index === memberWith0Attack.length -1) formattedString += `\u00A0et\u00A0${member}`;
     });
 
     return formattedString === '' ? '-' : formattedString;
