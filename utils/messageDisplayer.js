@@ -115,8 +115,7 @@ export function displayWarInfo(data) {
             .setDescription(stateTranslations[data.state])
             .addFields(
                 {name: 'Début',    value: toValidDate(data.startTime, data.state), inline: true},
-                // {name: 'Fin',      value: toValidDate(data.endTime, data.state), inline: true},
-                {name: 'Fin',      value: 'Aujourd\'hui à 17:30', inline: true},
+                {name: 'Fin',      value: toValidDate(data.endTime, data.state), inline: true},
                 {name: 'Fin dans', value: getTimeLeft(data.endTime, data.state), inline: true},
             )
             .addFields({ name: ' ', value: ' ' })
