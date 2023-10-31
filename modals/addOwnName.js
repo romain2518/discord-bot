@@ -25,9 +25,17 @@ export const modal = {
             return interaction.reply({ content: 'Une erreur est survenue, veuillez réessayer plus tard.', ephemeral: true });
         }
 
+        let message;
         if (found) {
-            await refreshPlayerList(interaction.client, memberToAdd);
+            if (await refreshPlayerList(interaction.client, memberToAdd)) {
+                message = 'Ta demande a bien été traitée';
+            } else {
+                message = 'Ton nom figure déjà dans la liste.';
+            }
+        } else {
+            message = 'Tu n\'as pas été trouvé parmi les membres du clan';
         }
-        interaction.reply({ content: found ? 'Ta demande a bien été traitée' : 'Tu n\'as pas été trouvé parmi les membres du clan', ephemeral: true });
+
+        interaction.reply({ content: message, ephemeral: true });
     }
 };

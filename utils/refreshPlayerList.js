@@ -38,6 +38,9 @@ export async function refreshPlayerList(client, member = null, update = false, r
                 // Add, update or remove given member if needed
                 if (member) {
                     if (!remove && !update) { // Add member
+                        // Checks if member is already in list (same discord id & same game tag)
+                        const alreadyInList = memberList.some(m => (m.discordId === member.discordId && m.gameTag === member.gameTag));
+                        if (alreadyInList) return false;
                         memberList.push(member);
                     } else {
                         let found = false;
