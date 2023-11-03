@@ -23,9 +23,9 @@ export async function refreshCurrentWarInfos(client) {
             
             let currentRoundsTags;
             if (data.state === 'preparation' && rounds[latestWarRoundIndex-1] !== undefined) { // If latest round has not started yet and the day before has a round
-                currentRoundsTags = rounds[latestWarRoundIndex].warTags;
-            } else {
                 currentRoundsTags = rounds[latestWarRoundIndex-1].warTags;
+            } else {
+                currentRoundsTags = rounds[latestWarRoundIndex].warTags;
             }
 
             // Retrieving war infos 
