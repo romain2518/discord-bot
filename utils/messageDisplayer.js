@@ -121,8 +121,8 @@ export function displayWarInfo(data) {
             )
             .addFields({ name: ' ', value: ' ' })
             .addFields(
-                {name: 'Nous',      value: data.clan.name, inline: true},
-                {name: 'Opposant',  value: data.opponent.name ?? '-', inline: true},
+                {name: 'Nous',      value: data.clan.tag === process.env.CLAN_TAG ? data.clan.name : data.opponent.name, inline: true},
+                {name: 'Opposant',  value: (data.opponent.tag === process.env.CLAN_TAG ? data.clan.name : data.opponent.name) ?? '-', inline: true},
             )
             .addFields({ name: ' ', value: ' ' })
             .addFields(
