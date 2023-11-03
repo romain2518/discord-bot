@@ -110,6 +110,8 @@ function getMembersWith0Attack(memberList) {
 export function displayWarInfo(data) {
     let embedMessages, components;
     try {
+        const clan = data.clan.tag === process.env.CLAN_TAG ? data.clan : data.opponent;
+        const opponent = data.opponent.tag === process.env.CLAN_TAG ? data.clan : data.opponent;
         const firstMessage = new EmbedBuilder()
             .setColor(getColorBasedOnWarState(data.state))
             .setTitle('Info guerre de clan')
@@ -121,20 +123,20 @@ export function displayWarInfo(data) {
             )
             .addFields({ name: ' ', value: ' ' })
             .addFields(
-                {name: 'Nous',      value: data.clan.tag === process.env.CLAN_TAG ? data.clan.name : data.opponent.name, inline: true},
-                {name: 'Opposant',  value: (data.opponent.tag === process.env.CLAN_TAG ? data.clan.name : data.opponent.name) ?? '-', inline: true},
+                {name: 'Nous',      value: clan.name, inline: true},
+                {name: 'Opposant',  value: opponent.name ?? '-', inline: true},
             )
             .addFields({ name: ' ', value: ' ' })
             .addFields(
-                {name: (data.clan.stars ?? '-')     + ' ⭐', value: (data.clan.destructionPercentage ?? '-')     + '% détruit', inline: true},
-                {name: (data.opponent.stars ?? '-') + ' ⭐', value: (data.opponent.destructionPercentage ?? '-') + '% détruit', inline: true},
+                {name: (clan.stars ?? '-')     + ' ⭐', value: (clan.destructionPercentage ?? '-')     + '% détruit', inline: true},
+                {name: (opponent.stars ?? '-') + ' ⭐', value: (opponent.destructionPercentage ?? '-') + '% détruit', inline: true},
             )
         ;
         
         const secondMessage = new EmbedBuilder()
             .setColor(getColorBasedOnWarState(data.state))
             .setTitle('Membres n\'ayant pas attaqué :')
-            .setDescription(getMembersWith0Attack(data.clan.members))
+            .setDescription(getMembersWith0Attack(clan.members))
             .addFields({ name: ' ', value: ' ' })
             .setFooter({ text: 'Dernière mise à jour' })
             .setTimestamp()
