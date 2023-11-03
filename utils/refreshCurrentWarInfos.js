@@ -9,19 +9,28 @@ export async function refreshCurrentWarInfos(client) {
     if (data.clan.members === undefined) {
         data = await getWarLeagueGroupInfos();
         if (data) { // If data is not False, it means the clan is in a war league
-            // Retrieving current round
+            // Retrieving latest round
             const rounds = data.rounds;
-            let todayRoundIndex
+            let latestWarRoundIndex
             rounds.forEach((round, index) => {
                 if (round.warTags[0] !== '#0') {
-                    todayRoundIndex = index;
+                    latestWarRoundIndex = index;
                 }
             });
 
-            // Retrieving war league infos of today
-            const todayWarTags = rounds[todayRoundIndex].warTags;
+            // Retrieving war league round
+            data = await getWarLeagueWarInfos(rounds[latestWarRoundIndex].warTags[0]); // Data from first war of latest round
+            
+            let currentRoundsTags;
+            if (data.state === 'preparation' && rounds[latestWarRoundIndex-1] !== undefined) { // If latest round has not started yet and the day before has a round
+                currentRoundsTags = rounds[latestWarRoundIndex].warTags;
+            } else {
+                currentRoundsTags = rounds[latestWarRoundIndex-1].warTags;
+            }
+
+            // Retrieving war infos 
             let clanTag, opponentTag;
-            for (const warTag of todayWarTags) { // Using a for of loop in order to be able to use await & break statements
+            for (const warTag of currentRoundsTags) { // Using a for of loop in order to be able to use await & break statements
                 data = await getWarLeagueWarInfos(warTag);
     
                 clanTag = data.clan.tag;
