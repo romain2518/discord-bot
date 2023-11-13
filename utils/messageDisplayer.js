@@ -235,8 +235,8 @@ export function displayInactiveAttackersAlert(client, opponentName, inactiveAtta
     let formattedString = '';
     inactiveAttackers.forEach((member, index) => {
         if (index === 0) formattedString += `<@${member.discordId}>(${member.gamePseudo})`;
-        else if (index < inactiveAttackers.length -1) formattedString += `, <${member.discordId}>(${member.gamePseudo})`;
-        else if (index === inactiveAttackers.length -1) formattedString += ` et <${member.discordId}>(${member.gamePseudo})`;
+        else if (index < inactiveAttackers.length -1) formattedString += `, <@${member.discordId}>(${member.gamePseudo})`;
+        else if (index === inactiveAttackers.length -1) formattedString += ` et <@${member.discordId}>(${member.gamePseudo})`;
     });
 
     channel.send(`La guerre contre ${opponentName} se finit bientôt.\nMerci à ${formattedString} d'attaquer (si le niveau des cibles restantes le permet).`);
