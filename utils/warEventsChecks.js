@@ -29,10 +29,10 @@ export function checkForWarStarts(client) {
 
             // Parsing date
             const today = moment().startOf('day').tz('Europe/Paris');
-            const readableDate = today.format('dddd DD MMM YYYY [à]') + warStartDate.slice(-5);
-            const parsedDate = moment.tz(readableDate, 'dddd DD MMM YYYY [à] HH:mm', 'Europe/Paris');
+            const readableStartDate = today.format('dddd DD MMM YYYY [à] ') + warStartDate.slice(-5);
+            const parsedStartDate = moment.tz(readableStartDate, 'dddd DD MMM YYYY [à] HH:mm', 'Europe/Paris');
 
-            const diffInMinutes = currentMoment.diff(parsedDate, 'minutes');
+            const diffInMinutes = currentMoment.diff(parsedStartDate, 'minutes');
             
             // If war started less than an hour ago
             if (diffInMinutes >= 0 && diffInMinutes < 60) {
@@ -87,20 +87,20 @@ export function checkForInactiveAttackers(client) {
             const today = moment().startOf('day').tz('Europe/Paris');
             const tomorrow = moment(today).add(1, 'days');
             
-            const readableDate = (isWarEndingToday ? today : tomorrow).format('dddd DD MMM YYYY [à]') + warEndDate.slice(-5);
-            const parsedDate = moment.tz(readableDate, 'dddd DD MMM YYYY [à] HH:mm', 'Europe/Paris');
+            const readableEndDate = (isWarEndingToday ? today : tomorrow).format('dddd DD MMM YYYY [à] ') + warEndDate.slice(-5);
+            const parsedEndDate = moment.tz(readableEndDate, 'dddd DD MMM YYYY [à] HH:mm', 'Europe/Paris');
             
-            const diffInHours = currentMoment.diff(parsedDate, 'hours');
+            const diffInHours = currentMoment.diff(parsedEndDate, 'hours');
             
             // If war ends in 3 hours but more than 2 hours in order to not send only one message
             const diff3Hours = diffInHours === -3;
             // OR if it is 7am (7:01*) and war ends at 10:00
             //      since it will ends in less than 3 hours but not before 10am (condition for wars ending at nighttime)
             //*     Every check occurs one minute after the begin of the hour
-            const is7AmAndWarEndsAt10 = currentMoment.hour() === 7 && parsedDate.hour() === 10;
+            const is7AmAndWarEndsAt10 = currentMoment.hour() === 7 && parsedEndDate.hour() === 10;
             
             // OR If it is 9pm (21h) and war ends TOMORROW before 10am (10h)
-            const is9PmAndWarEndsTomorrowBefore10Am = !isWarEndingToday && currentMoment.hour() === 21 && parsedDate.hour() < 10;
+            const is9PmAndWarEndsTomorrowBefore10Am = !isWarEndingToday && currentMoment.hour() === 21 && parsedEndDate.hour() < 10;
             
             if (diff3Hours || is7AmAndWarEndsAt10 || is9PmAndWarEndsTomorrowBefore10Am) {
                 const inactiveAttackersString = warInfosMessage.embeds[1].data.description;
