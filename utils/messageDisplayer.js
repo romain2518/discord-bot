@@ -57,10 +57,10 @@ function getTimeLeft(dateString, state) {
     if (state === 'warEnded' || state === 'notInWar') return '-';
     
     const format = 'YYYYMMDDTHHmmss.SSSZ'; // ISO dates format
-    const date1 = moment();
-    const date2 = moment(dateString, format, 'UTC');
+    const currentMoment = moment().utc();
+    const endDate = moment.tz(dateString, format, 'UTC');
     
-    const duration = moment.duration(date2.diff(date1));
+    const duration = moment.duration(endDate.diff(currentMoment));
     const days = state === 'preparation' ? 1 : 0;
     const hours = duration.hours();
     const minutes = duration.minutes();

@@ -16,7 +16,7 @@ export function checkForWarStarts(client) {
             if (!warInfosMessage || warInfosMessage.author.id !== process.env.BOT_ID  || !warInfosMessage.embeds[0].data.title.startsWith('Info guerre de clan')) return;
             
             moment.locale('fr');
-            const currentMoment = moment();
+            const currentMoment = moment().tz('Europe/Paris');
 
             // Checking if Clash of Clans API is up
             const lastWarInfosUpdate = moment.tz(warInfosMessage.embeds[1].data.timestamp, 'Europe/Paris');
@@ -67,9 +67,9 @@ export function checkForInactiveAttackers(client) {
             if (warInfosMessage.embeds[0].data.fields[8].value === '100% détruit') return;
             
             moment.locale('fr');
-            const currentMoment = moment();
+            const currentMoment = moment().tz('Europe/Paris');
             
-            // Checking if it is nighttime (from 9pm (21h) to 7am (7h))
+            // Checking if it is nighttime in Europe/Paris time zone (from 9pm (21h) to 7am (7h))
             if (currentMoment.hour() > 21 || currentMoment.hour() < 7) return;
             
             // Checking if Clash of Clans API is up
